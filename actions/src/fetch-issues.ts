@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import * as core from '@actions/core';
 import {GitHubAPI} from './github-api';
 import {Inputs, Repository, Issues, Comments} from './interfaces';
 
@@ -22,6 +23,7 @@ export async function fetchIssues(inps: Inputs, tmpDir: string): Promise<Reposit
   };
   issues.fullPath = path.join(issues.location, issues.fileName);
   fs.writeFileSync(issues.fullPath, JSON.stringify(issues.data));
+  core.debug(`${issues.data.length} issues saved to ${issues.fullPath}`);
 
   const comments: Comments = {
     data: await githubAPI.getComments(),
@@ -31,6 +33,7 @@ export async function fetchIssues(inps: Inputs, tmpDir: string): Promise<Reposit
   };
   comments.fullPath = path.join(comments.location, comments.fileName);
   fs.writeFileSync(comments.fullPath, JSON.stringify(comments.data));
+  core.debug(`${comments.data.length} comments saved to ${comments.fullPath}`);
 
   repository.issues = issues;
   repository.comments = comments;

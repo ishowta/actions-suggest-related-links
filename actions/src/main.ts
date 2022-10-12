@@ -43,6 +43,7 @@ export async function run(): Promise<void> {
       // preprocessing
       const trainingData: Array<any> = []; // eslint-disable-line @typescript-eslint/no-explicit-any
       repository.issues.data.forEach(data => {
+        core.debug(data);
         const issue: Issue = {
           html_url: data.html_url,
           number: data.number,
